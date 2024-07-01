@@ -76,7 +76,7 @@ Ensure you have the following installed and configured:
 3. **Run the script:**
 
     ```bash
-    python3 face_tracking_motor_control.py
+    python3 test_BT.py
     ```
 
 ## Code Explanation
