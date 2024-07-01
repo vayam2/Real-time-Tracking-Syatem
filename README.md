@@ -1,13 +1,115 @@
+# Face Tracking and Motor Control using OpenCV and Raspberry Pi
 
-A Face Tracking Camera is a camera that uses algorithms to locate faces within images or video footage. Face detection has progressed from rudimentary computer vision techniques to advances in machine learning (ML) to increasingly sophisticated artificial neural networks (ANN) and related technologies; the result has been continuous performance improvements. It now plays an important role as the first step in many key applications -- including face tracking, face analysis, and facial recognition.
+This project demonstrates how to use a Raspberry Pi with OpenCV for face tracking and controlling motors based on the detected face's position. The setup uses a webcam for capturing video, the `haarcascade_frontalface_default.xml` for face detection, and the `adafruit_servokit` for controlling servos.
 
-Face detection applications use algorithms and ML to find human faces within larger images, which often incorporate other non-face objects such as landscapes, buildings and other human body parts like feet or hands. Face detection algorithms typically start by searching for human eyes -- one of the easiest features to detect. The algorithm might then attempt to detect eyebrows, the mouth, nose, nostrils and the iris. Once the algorithm concludes that it has found a facial region, it applies additional tests to confirm that it has, in fact, detected a face.
+## Prerequisites
 
-Usually tracking algorithms are faster than detection algorithms. The reason is simple. When you are tracking an object that was detected in the previous frame, you know a lot about the appearance of the object. You also know the location in the previous frame and the direction and speed of its motion. So in the next frame, you can use all this information to predict the location of the object in the next frame and do a small search around the expected location of the object to accurately locate the object. A good tracking algorithm will use all information it has about the object up to that point while a detection algorithm always starts from scratch
+Ensure you have the following installed and configured:
 
-Stepper motors are inexpensive and rugged because they have fewer mechanical parts. They are brushless, easy to position, and are commonly used in automation systems, although they are small low power devices as compared to other motors...
-They move in steps based on pulses sent to the stator windings, thus they do not have a horsepower rating because they do not actually rotate continuously. The speed of the motor is controlled by the frequency of the pulses. The stepper motor is used for precise positioning with a motor, such as hard disk drives, robotics, antennas, telescopes, and some toys. Stepper motors cannot run at high speeds but have a high holding torque. A stepper motor can be thought of as a "digital" version of an electric motor because it converts digital pulses into fixed steps such that a computer system can easily "step" the rotation of the motor for precise control. A stepper motor has low cost, has simple drive electronics, is accurate, has decent holding torque, and operates at moderate speeds. High acceleration and heavy loads that still require accuracy need a servo motor, the predecessor of the stepper motor.
+1. **Hardware:**
+   - Raspberry Pi (any model with GPIO support)
+   - Webcam
+   - Servo motor
+   - Stepper motor
+   - Adafruit Servo Kit
+   - Required connections for motors to GPIO pins
 
-Taking the application of Face detection and tracking to another level authors of this proposal seek to develop a camera system capable of aligning itself such that the center of the frame which overlaps with the face . The proposed system in the later future could also be developed to detect and track a particular face from a crowd using face recognition.
+2. **Software:**
+   - Python 3
+   - OpenCV
+   - Adafruit Servo Kit library
+   - imutils (for FPS calculation)
+   - RPi.GPIO (for GPIO control)
 
+## Installation
 
+1. **Update and Upgrade your Raspberry Pi:**
+
+    ```bash
+    sudo apt-get update
+    sudo apt-get upgrade
+    ```
+
+2. **Install Python and pip:**
+
+    ```bash
+    sudo apt-get install python3 python3-pip
+    ```
+
+3. **Install OpenCV:**
+
+    ```bash
+    pip3 install opencv-python opencv-python-headless
+    ```
+
+4. **Install Adafruit Servo Kit library:**
+
+    ```bash
+    pip3 install adafruit-circuitpython-servokit
+    ```
+
+5. **Install imutils:**
+
+    ```bash
+    pip3 install imutils
+    ```
+
+6. **Install RPi.GPIO:**
+
+    ```bash
+    pip3 install RPi.GPIO
+    ```
+
+## Running the Code
+
+1. **Download or Clone the Repository:**
+
+    ```bash
+    git clone <repository-url>
+    cd <repository-directory>
+    ```
+
+2. **Ensure the haarcascade file is present:**
+
+    The code uses `haarcascade_frontalface_default.xml` for face detection. Make sure this file is in the same directory as the script or provide the correct path to it.
+
+3. **Run the script:**
+
+    ```bash
+    python3 face_tracking_motor_control.py
+    ```
+
+## Code Explanation
+
+### motorInput Function
+
+This function takes an angle as input and controls a stepper motor to move a specified number of steps, based on the input angle.
+
+### Main Loop
+
+1. **Face Detection:**
+   - Captures video frames from the webcam.
+   - Converts frames to grayscale for face detection using the Haar Cascade classifier.
+   - If a face is detected, initializes a MOSSE tracker with the face bounding box.
+
+2. **Tracking and Motor Control:**
+   - Continuously tracks the face in subsequent frames.
+   - Calculates the error between the face position and the frame center.
+   - Converts this error to angles (`thetaX` and `thetaY`) and adjusts servo motor angles accordingly.
+
+3. **Display:**
+   - Displays the video frame with the bounding box around the detected face.
+   - Shows FPS and tracker status on the frame.
+
+### Exiting the Program
+
+Press `q` to exit the program. The script will close the video window and perform necessary cleanup.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- OpenCV for providing the tools for image processing.
+- Adafruit for their comprehensive library for controlling servos.
